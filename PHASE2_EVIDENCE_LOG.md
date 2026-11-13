@@ -54,17 +54,22 @@
 | Field | Value |
 |---|---|
 | **Timestamp (IST)** | 2026-11-13 21:30:06 (commit) / 21:30:09 (push) |
-| **Timestamp (UTC)** | 2026-11-13T16:00:06Z |
-| **What I Did** | Synced local `main` to `origin/main` (`git reset --hard origin/main`), created branch `feature-automation-test` off `main`, appended E-004 PR Validation section to `notes.md`, committed as `b2f0264`, and pushed to `origin/feature-automation-test`. |
-| **What I Observed** | Push succeeded: `* [new branch] feature-automation-test -> feature-automation-test`. GitHub API `/compare/main...feature-automation-test` returned: 1 file changed (`notes.md`, +3 lines, 0 deletions), `merge_base_commit: c94fa16` (shared ancestor), clean merge. Diff patch confirmed: `+## E-004 PR Validation\n+- Verified clean child branch off main for Pull Request readiness.` |
-| **PR status** | ⚠️ **PR NOT YET CREATED** — Browser automation requires Chrome with remote debugging. See manual step below. |
-| **PR URL (pending)** | https://github.com/SkandaShandilya/REA-test/pull/new/feature-automation-test |
+| **Timestamp (UTC — commit)** | 2026-11-13T16:00:06Z |
+| **Timestamp (UTC — PR created)** | 2026-11-13T16:11:02Z |
+| **What I Did** | Synced local `main` to `origin/main` (`git reset --hard origin/main`), created branch `feature-automation-test` off `main`, appended E-004 PR Validation section to `notes.md`, committed as `b2f0264`, pushed to `origin/feature-automation-test`, and opened Pull Request #1 targeting `main`. |
+| **What I Observed** | Push succeeded: `* [new branch] feature-automation-test -> feature-automation-test`. PR #1 created with title "feat: update notes.md for PR validation (E-004)". GitHub API (`GET /repos/SkandaShandilya/REA-test/pulls/1`) confirmed: `state: open`, `merged: false`, `merged_at: null`, `closed_at: null`, `mergeable: true`, `mergeable_state: clean`, `additions: 3`, `deletions: 0`, `changed_files: 1`. Head branch: `feature-automation-test` (SHA `b2f0264`). Base branch: `main`. |
+| **PR number** | `#1` |
+| **PR title** | `feat: update notes.md for PR validation (E-004)` |
+| **PR URL** | https://github.com/SkandaShandilya/REA-test/pull/1 |
+| **PR status** | ✅ **Open** (not merged, not closed) |
+| **Source branch** | `feature-automation-test` |
+| **Target branch** | `main` |
 | **PR changed files** | `notes.md` (+3 lines, 0 deletions) |
-| **Mergeability** | Clean — no conflicts (confirmed via API compare, shared common ancestor `c94fa16`) |
-| **Evidence classification** | **CONFIRMED** (branch + push + diff); PR creation **PENDING** |
+| **Merge conflicts** | None — `mergeable_state: clean` |
+| **Evidence classification** | **CONFIRMED** |
 | **Commit hash** | `b2f0264154b690496034ba4f1e4ceed422d17a16` |
-| **Evidence source** | `git log`, `git push` output, `GET /repos/.../compare/main...feature-automation-test` |
-| **Limitations** | PR form submission requires a browser with remote debugging or authenticated GitHub API token. This is the **one remaining manual step**. |
+| **Evidence source** | `git log`, `git push` output, `GET /repos/SkandaShandilya/REA-test/compare/main...feature-automation-test`, `GET /repos/SkandaShandilya/REA-test/pulls/1` |
+| **Limitations** | None. PR is live and API-confirmed open. |
 
 ---
 
@@ -113,19 +118,18 @@
 
 ---
 
-## Remaining Manual Steps
+## Status Summary
+
+> [!NOTE]
+> All E-001 to E-005 observations are fully confirmed. No manual steps remain.
+
+| ID | Description | Status |
+|---|---|---|
+| E-001 | Repository initialised on GitHub | ✅ CONFIRMED |
+| E-002 | First commits to `main` (`aaced52`, `c94fa16`) | ✅ CONFIRMED |
+| E-003 | Orphan-branch history conflict discovered | ✅ CONFIRMED |
+| E-004 | Feature branch created, committed, pushed, PR #1 opened | ✅ CONFIRMED |
+| E-005 | GitHub Actions CI workflow triggered and passed | ✅ CONFIRMED |
 
 > [!IMPORTANT]
-> **E-004 PR creation is the only remaining step.**
-
-1. Open your browser and go to:  
-   **https://github.com/SkandaShandilya/REA-test/compare/main...feature-automation-test**
-2. Verify the page shows:  
-   - base: `main` ← compare: `feature-automation-test`  
-   - 1 file changed: `notes.md` (+3 lines)  
-   - "These branches can be automatically merged."
-3. Set title: `feat: PR validation test for E-004 (feature-automation-test → main)`
-4. Click **"Create pull request"**
-5. Record the PR number (e.g. `#1`) and URL (e.g. `https://github.com/SkandaShandilya/REA-test/pull/1`)
-6. **Do NOT merge the PR.** Leave it open for evidence.
-7. Update this log with the PR number, URL, and open status.
+> **Do NOT merge PR #1** at https://github.com/SkandaShandilya/REA-test/pull/1 — keep it open as evidence.
