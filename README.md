@@ -1,155 +1,109 @@
-graph TD
+flowchart TD
     %% Styling Definitions
-    classDef confirmed fill:#d4edda,stroke:#28a745,stroke-width:2px,color:#000;
-    classDef inferred fill:#d1ecf1,stroke:#17a2b8,stroke-width:2px,color:#000;
-    classDef hypothesis fill:#fff3cd,stroke:#ffc107,stroke-width:2px,color:#000;
-    classDef unexamined fill:#e2e3e5,stroke:#6c757d,stroke-width:2px,color:#000;
+    classDef confirmed fill:#d4edda,stroke:#28a745,stroke-width:2px,color:black;
+    classDef inferred fill:#cce5ff,stroke:#007bff,stroke-width:2px,color:black;
+    classDef hypothetical fill:#fff3cd,stroke:#ffc107,stroke-width:2px,color:black;
+    classDef unexamined fill:#e2e3e5,stroke:#6c757d,stroke-width:2px,color:black;
 
-    %% 1. FRONTEND / PRESENTATION LAYER
-    subgraph FrontendLayer [1. FRONTEND / PRESENTATION LAYER]
-        F_WEB["GitHub Web App (Dashboard, Code, PRs, Actions) [GH-001]"]:::confirmed
-        F_MOB["GitHub Mobile App [GH-001]"]:::confirmed
-        F_IDE["Desktop & IDE Integrations [GH-001]"]:::confirmed
+    %% USER LAYER
+    subgraph UserLayer [1. USER LAYER]
+        Dev[Developers E-002, E-004]:::confirmed
+        Browser[Browser E-006]:::confirmed
+        CLI[Git CLI E-003]:::confirmed
+        IDE[IDE Integration U-001]:::unexamined
     end
 
-    %% 2. CONTENT DELIVERY AND API GATEWAY LAYER
-    subgraph APILayer [2. CDN & API GATEWAY LAYER]
-        API_CDN("Content Delivery Network (CDN) [GH-001]"):::confirmed
-        API_GW["API Gateway / Request Router [GH-002]"]:::inferred
-        API_REST["REST API v3 [GH-002]"]:::confirmed
-        API_GQL["GraphQL API v4 [GH-002]"]:::confirmed
-        API_HOOK["Webhook Receiver [GH-009]"]:::confirmed
+    %% FRONTEND LAYER
+    subgraph FrontendLayer [2. FRONTEND LAYER]
+        WebUI[GitHub Web Interface E-006]:::confirmed
+        RepoDash[Repository Dashboard E-001]:::confirmed
+        CommitUI[Commit History UI E-002]:::confirmed
+        PRUI[Pull Request UI E-004]:::confirmed
+        ActionsUI[GitHub Actions UI E-005]:::confirmed
+        CDN[Content Delivery / CDN H-001]:::hypothetical
     end
 
-    %% 4. AUTHENTICATION AND SECURITY LAYER
-    subgraph AuthLayer [4. AUTHENTICATION & SECURITY LAYER]
-        AUTH_USER["User Authentication & OAuth [GH-004]"]:::confirmed
-        AUTH_RBAC["Role-Based Access Control / Perms [GH-004]"]:::inferred
-        AUTH_SESS["Session & Token Management [GH-004]"]:::confirmed
+    %% API LAYER
+    subgraph APILayer [3. API LAYER]
+        REST[GitHub REST API E-001]:::confirmed
+        RepoAPI[Repository Endpoints E-001]:::confirmed
+        CommitAPI[Commit Endpoints I-001]:::inferred
+        PRAPI[Pull Request Endpoints I-002]:::inferred
+        ActionsAPI[Actions Endpoints I-003]:::inferred
     end
 
-    %% 3. BACKEND / APPLICATION SERVICES LAYER
-    subgraph BackendLayer [3. BACKEND / APPLICATION SERVICES]
-        B_USER["User & Org Management [GH-004]"]:::confirmed
-        B_REPO["Repository Management [GH-005]"]:::confirmed
-        B_GIT["Git Version Control Service [GH-003]"]:::confirmed
-        B_PR["Pull Request & Code Review [GH-006]"]:::confirmed
-        B_ISSUE["Issues & Discussions [GH-001]"]:::confirmed
-        B_SEARCH["Search & Indexing Service [GH-001]"]:::confirmed
+    %% AUTHENTICATION & SECURITY
+    subgraph AuthLayer [5. AUTHENTICATION & SECURITY]
+        Auth[User Authentication U-002]:::unexamined
+        RBAC[Authorization & Permissions U-003]:::unexamined
     end
 
-    %% 11. AI AND INTELLIGENT SERVICES
-    subgraph AILayer [11. AI & INTELLIGENT SERVICES]
-        AI_COPILOT["GitHub Copilot Service [GH-011]"]:::confirmed
-        AI_MODELS("External LLM Infrastructure [GH-011]"):::hypothesis
+    %% BACKEND SERVICES
+    subgraph BackendLayer [4. BACKEND SERVICES]
+        RepoSvc[Repository Management Svc I-004]:::inferred
+        GitSvc[Git Version-Control Svc I-005]:::inferred
+        BranchSvc[Branch & Commit Mgmt I-006]:::inferred
+        PRSvc[Pull Request Mgmt I-007]:::inferred
+        ActionSvc[Actions Workflow Mgmt I-008]:::inferred
     end
 
-    %% 6. CACHING AND PERFORMANCE LAYER
-    subgraph CacheLayer [6. CACHING & PERFORMANCE LAYER]
-        C_APP[("Application-Level Cache [GH-001]")]:::inferred
-        C_META[("Repository Metadata Cache [GH-005]")]:::hypothesis
+    %% BACKGROUND PROCESSING
+    subgraph BackgroundLayer [7. BACKGROUND PROCESSING]
+        EventProc[Event Processing / Triggers I-009]:::inferred
+        MsgQueue[Message Queue H-002]:::hypothetical
+        Orchestrator[Actions Orchestration I-010]:::inferred
+        Runner[Ubuntu Runner E-005]:::confirmed
     end
 
-    %% 7. ASYNCHRONOUS PROCESSING AND QUEUE LAYER
-    subgraph AsyncLayer [7. ASYNCHRONOUS PROCESSING & QUEUE LAYER]
-        Q_EVENT["Event Bus / Message Queue [GH-008]"]:::hypothesis
-        Q_WORKER["Background Job Workers [GH-008]"]:::inferred
-        Q_NOTIFY["Notification Processing [GH-008]"]:::confirmed
+    %% EXTERNAL INTEGRATIONS
+    subgraph ExternalLayer [8. EXTERNAL INTEGRATIONS]
+        Checkout[actions/checkout@v4 E-005]:::confirmed
     end
 
-    %% 8. CI/CD AND GITHUB ACTIONS LAYER
-    subgraph ActionsLayer [8. CI/CD & GITHUB ACTIONS LAYER]
-        ACT_ORCH["Workflow Orchestrator [GH-007]"]:::inferred
-        ACT_SCHED["Job Scheduling System [GH-007]"]:::hypothesis
-        ACT_RUN_H["GitHub-Hosted Runners [GH-007]"]:::confirmed
-        ACT_RUN_S["Self-Hosted Runners [GH-007]"]:::confirmed
-        ACT_LOGS["Workflow Logs & Artifacts [GH-007]"]:::confirmed
+    %% DATA AND STORAGE
+    subgraph StorageLayer [6. DATA AND STORAGE]
+        GitStore[(Git Repository Storage I-011)]:::inferred
+        MetaStore[(Repository Metadata I-012)]:::inferred
+        PRStore[(Pull Request Metadata I-013)]:::inferred
+        Cache[(Cache Layer H-003)]:::hypothetical
     end
 
-    %% 5. DATA AND STORAGE LAYER
-    subgraph StorageLayer [5. DATA & STORAGE LAYER]
-        DB_GIT[("Git Repo Storage (Blobs, Trees) [GH-005]")]:::confirmed
-        DB_META[("Relational Metadata DB [GH-005]")]:::inferred
-        DB_SEARCH[("Search Index Data [GH-001]")]:::inferred
-        DB_BLOB[("File & Artifact Object Storage [GH-007]")]:::confirmed
+    %% MONITORING AND LOGGING
+    subgraph MonitorLayer [9. MONITORING AND LOGGING]
+        Logs[Workflow Execution Logs E-005, E-006]:::confirmed
+        Metrics[Internal Monitoring U-004]:::unexamined
     end
 
-    %% 9. EXTERNAL SERVICES AND INTEGRATIONS
-    subgraph ExternalLayer [9. EXTERNAL SERVICES & INTEGRATIONS]
-        EXT_OAUTH("Third-Party OAuth Apps [GH-009]"):::confirmed
-        EXT_HOOK("Webhook Consumers [GH-009]"):::confirmed
-    end
-
-    %% 10. MONITORING AND OBSERVABILITY LAYER
-    subgraph MonitorLayer [10. MONITORING & OBSERVABILITY LAYER]
-        MON_LOG["Application & Audit Logging [GH-010]"]:::confirmed
-        MON_METRIC["Metrics & Health Monitoring [GH-010]"]:::inferred
-    end
-
-    %% --- Connections & Data Flow ---
-    %% Frontend to API
-    F_WEB --> API_CDN
-    F_MOB --> API_GW
-    F_IDE --> API_GW
-    API_CDN --> API_GW
-
-    %% API to Auth & Backend
-    API_GW --> AUTH_USER
-    API_GW --> API_REST
-    API_GW --> API_GQL
-    API_HOOK --> Q_EVENT
+    %% INTERACTIONS (Solid = Observed, Dashed = Inferred/Hypothetical)
+    Browser -->|E-006| WebUI
+    CLI -->|E-003| GitSvc
+    Dev -->|E-002| CLI
+    WebUI -->|E-001| REST
+    CDN -.-> WebUI
     
-    API_REST --> AUTH_RBAC
-    API_GQL --> AUTH_RBAC
-    AUTH_USER --> AUTH_SESS
-    
-    %% API to Backend routing
-    API_REST --> B_USER
-    API_REST --> B_REPO
-    API_REST --> B_PR
-    API_GQL --> B_ISSUE
-    API_REST --> B_SEARCH
+    REST --> RepoAPI
+    REST -.-> CommitAPI
+    REST -.-> PRAPI
+    REST -.-> ActionsAPI
 
-    %% Backend to Cache
-    B_REPO -.-> C_APP
-    B_PR -.-> C_META
+    RepoAPI --> RepoSvc
+    CommitAPI -.-> BranchSvc
+    PRAPI -.-> PRSvc
+    ActionsAPI -.-> ActionSvc
 
-    %% Backend to Storage
-    B_GIT --> DB_GIT
-    B_REPO -.-> DB_META
-    B_USER -.-> DB_META
-    B_PR -.-> DB_META
-    B_SEARCH -.-> DB_SEARCH
-    B_ISSUE -.-> DB_META
+    WebUI -.-> Auth
 
-    %% Backend to Async/Queues
-    B_GIT -.-> Q_EVENT
-    B_PR -.-> Q_EVENT
-    B_ISSUE -.-> Q_EVENT
-    Q_EVENT -.-> Q_WORKER
-    Q_WORKER -.-> Q_NOTIFY
-    Q_WORKER -.-> B_SEARCH
+    RepoSvc -.-> MetaStore
+    GitSvc -.-> GitStore
+    BranchSvc -.-> GitStore
+    PRSvc -.-> PRStore
 
-    %% Actions & CI/CD Flow
-    Q_EVENT -.-> ACT_ORCH
-    ACT_ORCH -.-> ACT_SCHED
-    ACT_SCHED --> ACT_RUN_H
-    ACT_SCHED --> ACT_RUN_S
-    ACT_RUN_H --> ACT_LOGS
-    ACT_RUN_S --> ACT_LOGS
-    ACT_LOGS --> DB_BLOB
+    ActionSvc -.-> EventProc
+    EventProc -.-> MsgQueue
+    MsgQueue -.-> Orchestrator
+    Orchestrator -.-> Runner
+    Runner -->|E-005| Checkout
+    Runner -->|E-005| Logs
 
-    %% AI Integration
-    F_IDE --> AI_COPILOT
-    F_WEB --> AI_COPILOT
-    AI_COPILOT -.-> AI_MODELS
-    AI_COPILOT -.-> B_GIT
-
-    %% External
-    API_REST --> EXT_OAUTH
-    Q_WORKER --> EXT_HOOK
-
-    %% Monitoring
-    B_REPO -.-> MON_LOG
-    B_GIT -.-> MON_LOG
-    ACT_ORCH -.-> MON_METRIC
+    Cache -.-> MetaStore
+    Cache -.-> PRStore
